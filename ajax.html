@@ -1,15 +1,22 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">gx
+    <meta charset="UTF-8">
     <title>Document</title>
 </head>
 <body>
 <script src="ajax.js"></script>
 <script>
     ajax('./custom.json',{
+        type:'post',
+        cache:false,
+        data:{
+            name:'tom',
+            age:23
+        },
+//        data:'name=tom',
         success: function (res) {
-            console.log(res);
+            console.log(res,this);
         }
     });
 </script>

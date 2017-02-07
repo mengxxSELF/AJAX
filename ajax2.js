@@ -34,7 +34,9 @@
             data:null,
             dataType:'json',
             cache:true, // 是否关闭缓存 默认无缓存
-            success:null // 成功回调函数
+            timeout:null, // 超时
+            success:null, // 成功回调函数
+            error:null // 错误回调函数 或者超时
         };
         // 默认值赋值
         for(var attr in options){
@@ -75,19 +77,30 @@
         var xhr = new XMLHttpRequest();
         xhr.open(_def.method,_def.url,_def.async);
         xhr.onreadystatechange = function () {
-            if(xhr.readyState==4&&xhr.status==200){
-                var result = xhr.responseText;
-                // 处理数据类型 dataType  json  text  xml
-                switch (_def.dataType){
-                    case 'json':
-                        result= 'JSON' in window?JSON.parse(result):eval('('+result+')');
-                        break;
-                    case 'xml':
-                        result = xhr.responseXML;
-                        break;
+            if(xhr.readyState==4){
+                if(xhr.status==200){
+                    try {
+                        var result = xhr.responseText;
+                        // 处理数据类型 dataType  json  text  xml
+                        switch (_def.dataType){
+                            case 'json':
+                                result= 'JSON' in window?JSON.parse(result):eval('('+result+')');
+                                break;
+                            case 'xml':
+                                result = xhr.responseXML;
+                                break;
+                        }
+                        _def.success&&_def.success.call(xhr,result);
+                    }catch (e){
+                        // 错误或者超时
+                        _def.error&&_def.error.call(xhr);
+                    }
                 }
-                _def.success&&_def.success.call(xhr,result);
             }
+        };
+        xhr.timeout = _def.timeout;
+        xhr.ontimeout = function () {
+            _def.error&&_def.error.call(xhr);
         };
         xhr.send(_def.data);
     };
