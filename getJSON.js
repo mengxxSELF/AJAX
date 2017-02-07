@@ -19,5 +19,5 @@
         };
         xhr.send();
     };
-    window.post = post;
+    window.getJSON = getJSON;
 })();
