@@ -34,30 +34,19 @@
         var xhr = new XMLHttpRequest();
         xhr.open('post',_def.url,_def.async);
         xhr.onreadystatechange = function () {
-            if(xhr.readyState==4){
-                if(xhr.status==200){
-                    try {
-                        var result = xhr.responseText;
-                        // 处理数据类型 dataType  json  text  xml
-                        switch (_def.dataType){
-                            case 'json':
-                                result= 'JSON' in window?JSON.parse(result):eval('('+result+')');
-                                break;
-                            case 'xml':
-                                result = xhr.responseXML;
-                                break;
-                        }
-                        _def.success&&_def.success.call(xhr,result);
-                    }catch (e){
-                        // 错误或者超时
-                        _def.error&&_def.error.call(xhr);
-                    }
+            if(xhr.readyState==4&&xhr.status==200){
+                var result = xhr.responseText;
+                // 处理数据类型 dataType  json  text  xml
+                switch (_def.dataType){
+                    case 'json':
+                        result= 'JSON' in window?JSON.parse(result):eval('('+result+')');
+                        break;
+                    case 'xml':
+                        result = xhr.responseXML;
+                        break;
                 }
+                _def.success&&_def.success.call(xhr,result);
             }
-        };
-        xhr.timeout = _def.timeout;
-        xhr.ontimeout = function () {
-            _def.error&&_def.error.call(xhr);
         };
         xhr.send(_def.data);
     };
