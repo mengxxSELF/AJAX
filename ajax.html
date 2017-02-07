@@ -5,20 +5,33 @@
     <title>Document</title>
 </head>
 <body>
-<script src="ajax.js"></script>
+
+
+<script src="post.js"></script>
 <script>
-    ajax('./custom.json',{
-        type:'post',
-        cache:false,
-        data:{
-            name:'tom',
-            age:23
-        },
-//        data:'name=tom',
-        success: function (res) {
-            console.log(res,this);
-        }
-    });
+   /* get('./custom.json',function (res){
+        console.log('xxx',res);
+    });*/
+    post('./custom.json',{name:'tom'},function (res){
+        console.log('xxx',res);
+    })
 </script>
+
+
+<!--<script src="ajax.js"></script>-->
+<!--<script>-->
+    <!--ajax('./custom.json',{-->
+        <!--type:'post',-->
+        <!--cache:false,-->
+        <!--data:{-->
+            <!--name:'tom',-->
+            <!--age:23-->
+        <!--},-->
+<!--//        data:'name=tom',-->
+        <!--success: function (res) {-->
+            <!--console.log(res,this);-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
 </body>
 </html>
